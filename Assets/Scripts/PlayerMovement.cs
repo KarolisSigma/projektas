@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private int jumpforce=3;
     private CharacterController ch;
     private Vector3 velocity;
+    private bool grounded=true;
 
     void Start()
     {
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+
         X = Input.GetAxis("Horizontal");
         Z = Input.GetAxis("Vertical");
         //Y = Input.GetAxis("Jump");
@@ -33,17 +35,17 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity += Vector3.down * 9.81f * Time.deltaTime;
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+
+        if (Input.GetKeyDown(KeyCode.Space)&&grounded)
         {
             //rb.AddForce(Vector3.up * jumpforce * Y, ForceMode.VelocityChange);
             velocity += Vector3.up * jumpforce;
         }
-        else {
-            ch.Move(new Vector3(0,1f,0)*Time.deltaTime);
-        }
-        tr.Translate(velocity);
+
+
+        //tr.Translate(velocity);
         
-        ch.Move(new Vector3(X, 0, Z) * Time.deltaTime * speed);
+        ch.Move(new Vector3(X, velocity.y, Z) * Time.deltaTime * speed);
 
     }
 }
